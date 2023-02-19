@@ -1,0 +1,66 @@
+SELECT * FROM `avina sales record`.sales;
+SELECT SUM(price)
+FROM sales;
+
+SELECT MIN(price)
+FROM sales;
+
+SELECT MAX(price)
+FROM sales;
+
+SELECT AVG(price)
+FROM sales;
+
+SELECT UPPER(customerName)
+FROM sales;
+
+SELECT LOWER(productName)
+FROM sales;
+
+SELECT COUNT(price), productName
+from sales
+group by productName
+ORDER BY COUNT(price) DESC;
+
+--syntax to perform transaction and to lock the tables
+
+--to lock table for write only
+BEGIN TRANSACTION
+LOCK tables sales write;
+roleback;
+
+--to lock table for read only
+LOCK TABLES sales read;
+roleback;
+
+SELECT * FROM sales_schema.data_locks;
+
+update sales set quantity=quantity - 2920 where productID=1;
+SELECT * FROM sales;
+rollback;
+
+SELECT * FROM sales;
+
+update sales set quantity=quantity+480 where productID=1;
+rollback;
+
+select * from sales;
+
+--to insert new record into the table
+insert into sales (productID, productName, customerName, quantity, price, howPaid)
+values (21, "Travel charger", "Shamaki Usman", 500, 26000, "cash");
+commit;
+
+select * from sales;
+
+--to delete record from the table and return the record using roleback function
+delete from sales
+where productID=2;
+
+select * from sales;
+
+rollback;
+
+select * from sales;
+
+END
